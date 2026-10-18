@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>概念学习｜交互实验室</title><style>
+:root{--ink:#193b35;--muted:#60736b;--green:#08766b;--blue:#3178ad;--orange:#c37935;--line:#dce5dc}*{box-sizing:border-box}body{margin:0;background:#f5f4ed;color:var(--ink);font-family:"Microsoft YaHei",system-ui,sans-serif}a{color:var(--green);text-decoration:none}header{display:flex;justify-content:space-between;padding:22px max(24px,calc((100vw - 1200px)/2));border-bottom:1px solid var(--line);font-size:13px;background:#fffdf7}header span{color:var(--muted)}main{max-width:1200px;margin:44px auto;padding:0 25px}.eyebrow{font-size:11px;letter-spacing:3px;color:var(--green);font-weight:750}h1{font-size:43px;letter-spacing:-1px;margin:13px 0}p{line-height:1.9}.intro{color:var(--muted);font-size:14px;margin-bottom:32px}button,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:7px;background:#fffdf8;color:var(--ink);padding:9px 14px}button:hover{background:#e9f1e8}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #d59739;outline-offset:3px}.tabs{display:flex;gap:10px;margin-bottom:23px;flex-wrap:wrap}.tabs button{font-size:13px}.tabs button.active{background:var(--green);border-color:var(--green);color:white}.panel{background:#fffdf8;border:1px solid var(--line);border-radius:15px;padding:28px 30px;box-shadow:0 8px 35px #26493206}.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px}.panel-heading h2{font-size:22px;line-height:1.6;margin:0}.panel-heading a{font-size:11px;white-space:nowrap}.grid{display:grid;grid-template-columns:340px 1fr;gap:40px;align-items:start}.controls p{font-size:13px;margin-top:0;color:var(--muted)}label{display:block;font-size:13px;margin:21px 0 17px;font-weight:650}label output{float:right;color:var(--green);font-variant-numeric:tabular-nums}input[type=range]{display:block;width:100%;margin-top:12px;accent-color:var(--green);cursor:pointer}.numbers{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:20px 0}.metric{border:1px solid var(--line);border-radius:7px;padding:11px 12px;font-size:11px;color:var(--muted)}.metric strong{display:block;font-size:19px;color:var(--ink);line-height:1.7;font-weight:650;font-variant-numeric:tabular-nums}.formula{border-left:3px solid #9bbda6;background:#f0f5ed;padding:12px 15px;font:12px/1.9 Consolas,"Microsoft YaHei",monospace}.controls .hint{font-size:11px;line-height:1.9;margin:17px 0 0}.presets{display:flex;flex-wrap:wrap;gap:7px}.presets button{font-size:10px;padding:6px 9px}svg{width:100%;height:auto;min-height:200px;background:#fbfcf8;border:1px solid #edf0e7;border-radius:10px}svg text{font-family:"Microsoft YaHei",sans-serif;font-size:11px;fill:var(--muted)}.legend{display:flex;gap:22px;justify-content:center;font-size:11px;margin-top:15px;color:var(--muted)}.blue{color:var(--blue)}.orange{color:var(--orange)}.matrix-output{font:12px/1.8 Consolas,monospace;border:1px solid var(--line);border-radius:7px;padding:14px 18px;margin-top:20px;white-space:pre-wrap}.warning{color:#a85e22!important}footer{font-size:11px;color:var(--muted);margin:25px 0;line-height:1.9}.panel[hidden]{display:none}@media(max-width:1000px){.grid{grid-template-columns:290px 1fr;gap:25px}.panel{padding:24px}.panel-heading h2{font-size:19px}}@media(max-width:760px){header span{display:none}main{margin-top:30px;padding:0 16px}h1{font-size:34px}.panel{padding:20px}.grid{grid-template-columns:1fr;gap:20px}.panel-heading{display:block}.panel-heading a{display:inline-block;margin-top:8px}.tabs{gap:7px}.tabs button{font-size:11px;padding:8px 9px}.controls p{font-size:12px}svg{min-height:0}}
+
+</style></head>
+<body><header><a href="index.html">← 返回中文精读</a><span>2402.09236 · 可手算的世界</span></header>
+<main><div class="eyebrow">INTERACTIVE LAB</div><h1>让公式动起来。</h1><p class="intro">四个小实验，连接分布、几何、证明与编辑。这里使用教学模型，不运行真实大模型。</p>
+<nav class="tabs" aria-label="实验选择"><button data-panel="gaussian" class="active">01 高斯筛选</button><button data-panel="nullspace">02 左零空间</button><button data-panel="steering">03 概念编辑</button><button data-panel="covariance">04 协方差反例</button></nav>
+<section id="gaussian" class="panel"><div class="panel-heading"><h2>筛选目标，为什么不是样本均值？</h2><a href="index.html#02_model">对应第02章 ↗</a></div><div class="grid"><div class="controls"><p>基准 z ∼ N(0,1)，筛选权重 q(z−b)。移动目标与噪声大小，观察两者相乘后的分布。</p><label>目标 b <output id="b-value"></output><input id="b" type="range" min="-4" max="4" step="0.05" value="1"></label><label>筛选标准差 σ <output id="sigma-value"></output><input id="sigma" type="range" min="0.15" max="2.5" step="0.05" value="1"></label><div id="gaussian-values" class="numbers"></div><div class="formula">后验均值 = b / (1＋σ²)<br>后验方差 = σ² / (1＋σ²)</div><p class="hint">σ很小或目标很远时，拒绝采样可能变慢。图中虚线表示筛选目标，不是后验中心。</p></div><div><svg id="gaussian-chart" viewBox="0 0 680 350" role="img" aria-label="基准与筛选后高斯密度曲线"></svg><div class="legend"><span class="blue">● 基准密度</span><span class="orange">● 筛选后密度</span><span>┆ 目标b</span></div></div></div></section>
+<section id="nullspace" class="panel" hidden><div class="panel-heading"><h2>一个共同法向量，锁住两个概念坐标。</h2><a href="index.html#06_theorem1_algebra">对应第06章 ↗</a></div><div class="grid"><div class="controls"><p>固定讲义中的M、B。观察H(z)的左零向量w，以及哪些点会出现数值退化。</p><label>概念 z₁ <output id="z1-value"></output><input id="z1" type="range" min="-4" max="4" step="0.05" value="3"></label><label>概念 z₂ <output id="z2-value"></output><input id="z2" type="range" min="-4" max="4" step="0.05" value="4"></label><div class="presets"><button data-z="3,4">正常点 (3,4)</button><button data-z="0,0">秩退化 (0,0)</button><button data-z="0,1">w₂=0 (0,1)</button></div><div id="null-values" class="numbers"></div><p class="hint">浅线表示某个法向分量可能为0，曲线表示det K=0。理论用连续性处理例外点；有限样本算法仍可能在附近不稳定。</p></div><div><svg id="null-chart" viewBox="0 0 680 350" role="img" aria-label="左零空间证明的例外集合与当前坐标"></svg><div id="null-matrix" class="matrix-output"></div></div></div></section>
+<section id="steering" class="panel" hidden><div class="panel-heading"><h2>“任意加权都有效”，真的成立吗？</h2><a href="index.html#09_llm">对应第09章 ↗</a></div><div class="grid"><div class="controls"><p>目标概念读取第一坐标。两个训练差为Δ₁=(1,1,0)、Δ₂=(1,−1,0)。最小编辑是(1,0,0)。</p><label>权重 w₁ <output id="w1-value"></output><input id="w1" type="range" min="-1.5" max="1.5" step="0.05" value="0.5"></label><label>权重 w₂ <output id="w2-value"></output><input id="w2" type="range" min="-1.5" max="1.5" step="0.05" value="0.5"></label><div class="presets"><button data-w="0.5,0.5">均值</button><button data-w="1,1">目标翻倍</button><button data-w="1,-1">目标抵消</button><button data-w="-0.5,-0.5">目标反向</button></div><div id="steering-values" class="numbers"></div><div class="formula">目标变化 = w₁＋w₂<br>副作用 = w₁−w₂</div><p class="hint">对向量单位化，不能修复目标投影为0或方向反转。动态相似度权重并不自动保证权重和为1。</p></div><div><svg id="steering-chart" viewBox="0 0 680 350" role="img" aria-label="目标概念变化与非目标副作用的编辑向量"></svg><div class="legend"><span class="blue">● 理想编辑</span><span class="orange">● 实际编辑</span></div></div></div></section>
+<section id="covariance" class="panel" hidden><div class="panel-heading"><h2>相同的两个边缘，可以有多少个联合分布？</h2><a href="index.html#08_causality">对应第08章 ↗</a></div><div class="grid"><div class="controls"><p>A¹=(1,0)、A²=(0,1)。只要求两个概念的边缘方差都为1，并没有指定交叉协方差。</p><label>相关系数 ρ <output id="rho-value"></output><input id="rho" type="range" min="-0.95" max="0.95" step="0.01" value="0.7"></label><div class="presets"><button data-rho="0">不相关</button><button data-rho="0.7">正相关</button><button data-rho="-0.7">负相关</button></div><div id="cov-values" class="numbers"></div><div class="formula">Σ = [[1,ρ],[ρ,1]]<br>特征值 = 1＋ρ，1−ρ</div><p class="hint">每个ρ都满足式(78)，但椭圆不同。正交子空间也不自动让联合协方差唯一；还需要交叉协方差或独立性条件。</p></div><div><svg id="cov-chart" viewBox="0 0 680 350" role="img" aria-label="相同边缘方差下随相关性改变的联合高斯等密度椭圆"></svg></div></div></section>
+<footer>所有图示本地计算，无网络请求。用参数变化检查公式，不把数值演示当成一般定理证明。</footer></main><script>
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.StudyMath = factory();
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+  const transpose = a => a[0].map((_, j) => a.map(row => row[j]));
+  const multiply = (a, b) => { const bt = transpose(b); return a.map(row => bt.map(col => dot(row, col))); };
+  const matvec = (a, v) => a.map(row => dot(row, v));
+  function inverse(a) {
+    const n = a.length;
+    if (!a.every(r => r.length === n)) throw new Error('Square matrix required');
+    const m = a.map((r, i) => [...r, ...Array.from({ length: n }, (_, j) => +(i === j))]);
+    for (let j = 0; j < n; j++) {
+      let p = j;
+      for (let i = j + 1; i < n; i++) if (Math.abs(m[i][j]) > Math.abs(m[p][j])) p = i;
+      if (Math.abs(m[p][j]) < 1e-12) throw new Error('Singular matrix');
+      [m[j], m[p]] = [m[p], m[j]];
+      const pivot = m[j][j];
+      m[j] = m[j].map(x => x / pivot);
+      for (let i = 0; i < n; i++) if (i !== j) {
+        const c = m[i][j];
+        m[i] = m[i].map((x, k) => x - c * m[j][k]);
+      }
+    }
+    return m.map(row => row.slice(n));
+  }
+  function rank(a, tolerance = 1e-10) {
+    const m = a.map(row => row.slice());
+    let r = 0;
+    for (let j = 0; j < m[0].length && r < m.length; j++) {
+      let p = r;
+      for (let i = r + 1; i < m.length; i++) if (Math.abs(m[i][j]) > Math.abs(m[p][j])) p = i;
+      if (Math.abs(m[p][j]) < tolerance) continue;
+      [m[r], m[p]] = [m[p], m[r]];
+      for (let i = r + 1; i < m.length; i++) {
+        const c = m[i][j] / m[r][j];
+        for (let k = j; k < m[0].length; k++) m[i][k] -= c * m[r][k];
+      }
+      r++;
+    }
+    return r;
+  }
+  function gaussian(b, sigma) {
+    const variance = sigma * sigma / (1 + sigma * sigma);
+    const mean = b / (1 + sigma * sigma);
+    const acceptance = sigma / Math.sqrt(1 + sigma * sigma) * Math.exp(-b * b / (2 * (1 + sigma * sigma)));
+    return { mean, variance, acceptance, expectedTrials: 1 / acceptance };
+  }
+  const normalPDF = (x, mean = 0, variance = 1) => Math.exp(-((x - mean) ** 2) / (2 * variance)) / Math.sqrt(2 * Math.PI * variance);
+  const M = [[1, 0], [0, 1], [1, 1]];
+  const B = [[0, 0], [0, 0], [1, 2]];
+  const C = [[1 / 3, 2 / 3], [1 / 3, 2 / 3]];
+  function nullExample(z) {
+    const h = [[z[0] - 1 / 3, -2 / 3], [-1 / 3, z[1] - 2 / 3], [-1, -2]];
+    const det = h[0][0] * h[1][1] - h[0][1] * h[1][0];
+    const cross = [h[1][0] * h[2][1] - h[2][0] * h[1][1], h[2][0] * h[0][1] - h[0][0] * h[2][1], det];
+    const w = Math.abs(det) > 1e-10 ? cross.map(x => x / det) : cross;
+    const residue = matvec(transpose(h), w);
+    const recovered = [0, 1].map(i => Math.abs(w[i]) > 1e-10 ? (dot(w.slice(0, 2), C.map(row => row[i])) + w[2] * (i + 1)) / w[i] : null);
+    return { h, det, w, residue, recovered, rank: rank(h) };
+  }
+  const g = z => [0.5 * z[0] ** 2, 0.5 * z[1] ** 2, 0.5 * dot(z, z) - z[0] - 2 * z[1]];
+  function steering(w1, w2) {
+    return { eta: [w1 + w2, w1 - w2, 0], target: w1 + w2, sideEffect: w1 - w2 };
+  }
+  function rng(seed) {
+    let state = seed >>> 0;
+    return () => { state = (Math.imul(1664525, state) + 1013904223) >>> 0; return (state + 0.5) / 4294967296; };
+  }
+  function randomNormal(random) {
+    return Math.sqrt(-2 * Math.log(random())) * Math.cos(2 * Math.PI * random());
+  }
+  return { dot, transpose, multiply, matvec, inverse, rank, gaussian, normalPDF, M, B, C, nullExample, g, steering, rng, randomNormal };
+});
+
+;
+(function () {
+  'use strict';
+  const m = StudyMath;
+  const value = id => Number(document.getElementById(id).value);
+  const fmt = x => x === null ? '不可除以0' : Number.isFinite(x) ? (Math.abs(x) < 1e-10 ? '0' : Math.abs(x) > 10000 ? x.toExponential(3) : x.toFixed(4)) : '未定义';
+  const metric = (label, number) => `<div class="metric">${label}<strong>${fmt(number)}</strong></div>`;
+  const path = points => points.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+  function axes(svg, xmin, xmax, ymin, ymax, xlabel, ylabel) {
+    const X = x => 60 + (x - xmin) / (xmax - xmin) * 570;
+    const Y = y => 295 - (y - ymin) / (ymax - ymin) * 255;
+    let markup = '<rect width="680" height="350" fill="#fbfcf8"/>';
+    for (let i = 0; i <= 8; i++) {
+      const x = xmin + (xmax - xmin) * i / 8, px = X(x);
+      markup += `<line x1="${px}" y1="40" x2="${px}" y2="295" stroke="#e6ece3"/><text x="${px}" y="316" text-anchor="middle">${x.toFixed(1)}</text>`;
+    }
+    for (let i = 0; i <= 4; i++) {
+      const y = ymin + (ymax - ymin) * i / 4, py = Y(y);
+      markup += `<line x1="60" y1="${py}" x2="630" y2="${py}" stroke="#e6ece3"/><text x="49" y="${py + 4}" text-anchor="end">${y.toFixed(1)}</text>`;
+    }
+    markup += `<text x="642" y="318">${xlabel}</text><text x="60" y="23">${ylabel}</text>`;
+    svg.innerHTML = markup;
+    return { X, Y, add: s => svg.insertAdjacentHTML('beforeend', s) };
+  }
+  function gaussian() {
+    const b = value('b'), sigma = value('sigma'), v = m.gaussian(b, sigma);
+    document.getElementById('b-value').textContent = fmt(b); document.getElementById('sigma-value').textContent = fmt(sigma);
+    document.getElementById('gaussian-values').innerHTML = metric('后验均值', v.mean) + metric('后验方差', v.variance) + metric('接受概率', v.acceptance) + metric('平均尝试次数', v.expectedTrials);
+    const svg = document.getElementById('gaussian-chart');
+    const max = Math.max(m.normalPDF(0), m.normalPDF(v.mean, v.mean, v.variance)) * 1.15;
+    const a = axes(svg, -5, 5, 0, max, 'z', '概率密度');
+    const xs = Array.from({ length: 601 }, (_, i) => -5 + 10 * i / 600);
+    a.add(`<path d="${path(xs.map(x => [a.X(x), a.Y(m.normalPDF(x))]))}" fill="none" stroke="#3178ad" stroke-width="3"/><path d="${path(xs.map(x => [a.X(x), a.Y(m.normalPDF(x, v.mean, v.variance))]))}" fill="none" stroke="#c37935" stroke-width="3"/><line x1="${a.X(b)}" x2="${a.X(b)}" y1="40" y2="295" stroke="#a4aa95" stroke-dasharray="5 5"/><text x="${a.X(b) + 7}" y="53">b=${b.toFixed(2)}</text>`);
+    window.labState.gaussian = { b, sigma, ...v };
+  }
+  function nullspace() {
+    const z = [value('z1'), value('z2')], v = m.nullExample(z);
+    document.getElementById('z1-value').textContent = fmt(z[0]); document.getElementById('z2-value').textContent = fmt(z[1]);
+    document.getElementById('null-values').innerHTML = metric('det K', v.det) + metric('rank H', v.rank) + metric('w₁', v.w[0]) + metric('w₂', v.w[1]);
+    const matrix = v.h.map(row => '  [ ' + row.map(fmt).join(', ') + ' ]').join('\n');
+    document.getElementById('null-matrix').textContent = `H(z) =\n${matrix}\n\nw = [ ${v.w.map(fmt).join(', ')} ]\nwᵀH = [ ${v.residue.map(fmt).join(', ')} ]\n重建坐标 = [ ${v.recovered.map(fmt).join(', ')} ]`;
+    const a = axes(document.getElementById('null-chart'), -4.5, 4.5, -4.5, 4.5, 'z₁', 'z₂；曲线：det K=0');
+    a.add(`<line x1="${a.X(0)}" x2="${a.X(0)}" y1="40" y2="295" stroke="#c5aa79" stroke-dasharray="4 4"/><line x1="60" x2="630" y1="${a.Y(0)}" y2="${a.Y(0)}" stroke="#c5aa79" stroke-dasharray="4 4"/>`);
+    let segment = [];
+    function flush() { if (segment.length > 1) a.add(`<path d="${path(segment)}" fill="none" stroke="#83a995" stroke-width="2"/>`); segment = []; }
+    for (let i = 0; i <= 600; i++) { const x = -4.5 + 9 * i / 600, y = 2 * x / (3 * x - 1); if (!Number.isFinite(y) || Math.abs(y) > 4.5) flush(); else segment.push([a.X(x), a.Y(y)]); }
+    flush(); a.add(`<circle cx="${a.X(z[0])}" cy="${a.Y(z[1])}" r="6" fill="#c37935"/><text x="${a.X(z[0]) + 9}" y="${a.Y(z[1]) - 9}">当前点</text>`);
+    window.labState.nullspace = { z, ...v };
+  }
+  function steering() {
+    const w1 = value('w1'), w2 = value('w2'), v = m.steering(w1, w2);
+    document.getElementById('w1-value').textContent = fmt(w1); document.getElementById('w2-value').textContent = fmt(w2);
+    document.getElementById('steering-values').innerHTML = metric('目标变化（理想=1）', v.target) + metric('非目标副作用（理想=0）', v.sideEffect);
+    const a = axes(document.getElementById('steering-chart'), -3.5, 3.5, -3.5, 3.5, '目标', '非目标变化');
+    a.add(`<defs><marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#c37935"/></marker></defs><line x1="${a.X(1)}" x2="${a.X(1)}" y1="40" y2="295" stroke="#3178ad" stroke-dasharray="5 5"/><circle cx="${a.X(1)}" cy="${a.Y(0)}" r="5" fill="#3178ad"/><line x1="${a.X(0)}" y1="${a.Y(0)}" x2="${a.X(v.target)}" y2="${a.Y(v.sideEffect)}" stroke="#c37935" stroke-width="3" marker-end="url(#arrow-orange)"/><circle cx="${a.X(v.target)}" cy="${a.Y(v.sideEffect)}" r="5" fill="#c37935"/>`);
+    window.labState.steering = { w1, w2, ...v };
+  }
+  function covariance() {
+    const rho = value('rho'); document.getElementById('rho-value').textContent = fmt(rho);
+    document.getElementById('cov-values').innerHTML = metric('概念1边缘方差', 1) + metric('概念2边缘方差', 1) + metric('特征值 λ₁', 1 + rho) + metric('特征值 λ₂', 1 - rho);
+    const a = axes(document.getElementById('cov-chart'), -2.5, 2.5, -2.5, 2.5, 'z₁', 'z₂；联合高斯等密度线');
+    for (const r of [0.7, 1.4, 2]) {
+      const points = Array.from({ length: 181 }, (_, i) => { const t = i / 180 * Math.PI * 2, x = r * Math.cos(t), y = r * (rho * Math.cos(t) + Math.sqrt(1 - rho * rho) * Math.sin(t)); return [a.X(x), a.Y(y)]; });
+      a.add(`<path d="${path(points)} Z" stroke="#0c8172" fill="#0c81720d" stroke-width="2"/>`);
+    }
+    window.labState.covariance = { rho, marginalVariances: [1, 1], eigenvalues: [1 + rho, 1 - rho] };
+  }
+  window.labState = {};
+  document.querySelectorAll('.tabs button').forEach(button => button.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(b => { b.classList.toggle('active', b === button); b.setAttribute('aria-pressed', String(b === button)); });
+    document.querySelectorAll('.panel').forEach(panel => panel.hidden = panel.id !== button.dataset.panel);
+  });
+  for (const id of ['b', 'sigma']) document.getElementById(id).oninput = gaussian;
+  for (const id of ['z1', 'z2']) document.getElementById(id).oninput = nullspace;
+  for (const id of ['w1', 'w2']) document.getElementById(id).oninput = steering;
+  document.getElementById('rho').oninput = covariance;
+  document.querySelectorAll('[data-z]').forEach(b => b.onclick = () => { const [x, y] = b.dataset.z.split(','); document.getElementById('z1').value = x; document.getElementById('z2').value = y; nullspace(); });
+  document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { const [x, y] = b.dataset.w.split(','); document.getElementById('w1').value = x; document.getElementById('w2').value = y; steering(); });
+  document.querySelectorAll('[data-rho]').forEach(b => b.onclick = () => { document.getElementById('rho').value = b.dataset.rho; covariance(); });
+  gaussian(); nullspace(); steering(); covariance(); document.body.dataset.ready = 'true';
+})();
+
+</script>
+</body></html>
