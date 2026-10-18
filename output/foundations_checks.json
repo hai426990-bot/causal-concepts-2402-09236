@@ -1,0 +1,55 @@
+{
+  "passed": 12,
+  "total": 12,
+  "results": [
+    {
+      "name": "61个词条结构与中英别名完整",
+      "passed": true
+    },
+    {
+      "name": "长词优先：对数密度比不会拆成密度或分布",
+      "passed": true
+    },
+    {
+      "name": "线性独立与统计独立对应不同词条",
+      "passed": true
+    },
+    {
+      "name": "英文别名可查，且不误标英文单词内部",
+      "passed": true
+    },
+    {
+      "name": "未知词条不会回退到无关解释",
+      "passed": true
+    },
+    {
+      "name": "全部词条的公式都可排版",
+      "passed": true
+    },
+    {
+      "name": "内积与矩阵手算结果",
+      "passed": true
+    },
+    {
+      "name": "密度为5对应区间概率1，不是概率5",
+      "passed": true
+    },
+    {
+      "name": "离散贝叶斯重加权",
+      "passed": true
+    },
+    {
+      "name": "高斯配方逐点一致",
+      "passed": true
+    },
+    {
+      "name": "Sigmoid和logit互为反函数，交叉熵随真实标签概率提高而下降",
+      "passed": true
+    },
+    {
+      "name": "生成词典保留全部稳定锚点",
+      "passed": true
+    }
+  ],
+  "scope": "基础教学例子、术语查询与公式排版检查；不是一般理论的形式化证明"
+}
